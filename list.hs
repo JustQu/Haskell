@@ -8,9 +8,9 @@ swap (x : y : xs) = y:x:xs
 lastToFirst :: [Int] -> [Int]
 lastToFirst [] = []
 lastToFirst [x] = [x]
-lastToFirst (x:xs)
-	| xs == [] = [x]
-	| otherwise = swap [x] ++ (lastToFirst xs)
+lastToFirst (x:xs) = swap1 ([x] ++ (lastToFirst xs))
+	where
+		swap1 (x:y:xs) = y:x:xs
 
 --move first element to the end
 func :: [Int] -> [Int]
