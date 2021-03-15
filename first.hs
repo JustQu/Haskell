@@ -34,6 +34,6 @@ getpreprev x = getlast (dellast x)
 getpreprev1 :: [Int] -> [Int]
 getpreprev1 [] = []
 getpreprev1 (x:xs)
-	| xs == [] = []
-	| getpreprev1 xs == [] = [x]
-	| otherwise = getpreprev1 xs
+    | xs == [] = []
+    | getpreprev1 xs == [] = [x]
+    | otherwise = getpreprev1 xs
