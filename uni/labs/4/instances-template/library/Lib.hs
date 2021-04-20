@@ -32,12 +32,12 @@ instance Functor (Productish x) where
 
 instance (Monoid a) => Applicative (Productish a) where
   pure a = Productish mempty a
-  (<*>) (Productish f1 f2) (Productish a b) = Productish a (f2 b)
+  (<*>) (Productish f1 f2) (Productish a b) = Productish (f1 <> a) (f2 b)
 
 instance (Monoid a) => Monad (Productish a) where
   (>>=) q@(Productish a b) f = g a (f b)
       where
-          g a (Productish _ b) = Productish a b
+          g a (Productish t v) = Productish (a <> t) v
 
 instance Foldable (Productish a) where
     foldMap f (Productish a b) = f b
@@ -134,8 +134,11 @@ instance Applicative NotEmpty where
 instance Monad NotEmpty where
   -- ???????????????????????
   (>>=) (LastValue a) f = f a
-  (>>=) (MidValue a b) f = b >>= f
-
+--   (>>=) (MidValue a b) f = b >>= f
+  (>>=) (MidValue a b) f = MidValue (g (f a)) (b >>= f)
+    where
+        g (LastValue a) = a
+        g (MidValue a b) = a
 
 instance Foldable NotEmpty where
 
